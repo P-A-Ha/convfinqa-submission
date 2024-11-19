@@ -49,7 +49,7 @@ class VectorStoreManager:
         )
 
     def get_qa_retriever(self):
-        return self.qa_vector_store.as_retriever(search_kwargs={"k": 4})
+        return self.qa_vector_store.as_retriever(search_kwargs={"k": 1})
 
     def get_meta_retriever(self):
-        return self.meta_vector_store.as_retriever(search_kwargs={"k": 4})
+        return self.meta_vector_store.as_retriever(search_kwargs={"k": 2})

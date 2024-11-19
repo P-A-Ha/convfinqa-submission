@@ -9,7 +9,7 @@ model:
   top_p: 0.5
 
 data:
-  qa_file_path: 'data/qa_pairs.json'
+  qa_file_path: 'data/qa_pairs_drop_duplicates.json'
   additional_context_path: 'data/additional_context.json'
   chunk_overlap: 50
   chunk_size: 350 #limited by local compute

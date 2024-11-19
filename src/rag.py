@@ -1,17 +1,25 @@
 import logging
 
+from langchain_community.chat_models import ChatLlamaCpp
+
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 
 class RAGComponents:
-    def __init__(self, instruct_model, vector_store_mngr):
-        self.instruct_model = instruct_model
+    def __init__(
+        self,
+        instruct_class: ChatLlamaCpp,
+        vector_store_mngr,
+        batch_eval_retrieval=False,
+    ):
         self.vector_store_mngr = vector_store_mngr
         self.qa_retriever = self.vector_store_mngr.get_qa_retriever()
         self.context_retriever = self.vector_store_mngr.get_meta_retriever()
-        self.instruct_model.judge_chain()
-        self.instruct_model.response_chain()
+        if not batch_eval_retrieval:
+            self.instruct_class = instruct_class
+            self.instruct_class.judge_chain()
+            self.instruct_class.response_chain()
 
     def retrieval_qa(self, query):
         logger.info("Retrieving Documents")
@@ -30,7 +38,7 @@ class RAGComponents:
 
     def generation_judge(self, retrieved_question, query):
         logger.info("Judging Relevance of Query to Retrieved Question")
-        judge_output = self.instruct_model.judge_inf.invoke(
+        judge_output = self.instruct_class.judge_inf.invoke(
             {"query": query, "retrieved_question": retrieved_question}
         )
         logger.info(f"Judge Output: {judge_output.content}")
@@ -38,7 +46,7 @@ class RAGComponents:
 
     def generation_response(self, additional_context_text, query):
         logger.info("Generating response.")
-        response = self.instruct_model.response_inf.invoke(
+        response = self.instruct_class.response_inf.invoke(
             {"query": query, "context": additional_context_text}
         )
         logger.info(f"Response Output: {response.content}")

@@ -11,9 +11,10 @@ logger = logging.getLogger(__name__)
 
 
 class GradioInterface:
-    def __init__(self, rag_system, config):
+    def __init__(self, instruct_class, rag_system, config):
         self.rag_system = rag_system
         self.title = config["gradio"]["title"]
+        self.instruct_llm = instruct_class.instruct_llm
 
     async def gradio_RAGLogic(self, query, retrieval_only=False, evaluate=True):
         try:
@@ -41,11 +42,13 @@ class GradioInterface:
             relevancy_statement = "Retrieved Context Is Relevant to The Query"
             yield corresponding_qa_answer, relevancy_statement, "Processing...", "Processing..."
             if not retrieval_only:
-
+                generation_context_qa = (
+                    retrieved_question + " " + corresponding_qa_answer
+                )
                 try:
                     generative_response = await asyncio.to_thread(
                         self.rag_system.generation_response,
-                        corresponding_qa_answer,
+                        generation_context_qa,
                         query,
                     )
                     yield corresponding_qa_answer, relevancy_statement, generative_response, "Processing..."
@@ -64,6 +67,7 @@ class GradioInterface:
                             corresponding_qa_answer,
                             generative_response,
                             query,
+                            self.instruct_llm,
                         ).output_evaluation
                     )
                     yield corresponding_qa_answer, relevancy_statement, generative_response, evaluation
@@ -108,6 +112,7 @@ class GradioInterface:
                             corresponding_qa_answer,
                             generative_response,
                             query,
+                            self.instruct_llm,
                             context_text,
                         ).output_evaluation
                     )
@@ -138,7 +143,6 @@ class GradioInterface:
             ],
             title=self.title,
             description="FinQA RAG Application",
-            allow_flagging="never",
         )
 
         iface.launch(debug=True)

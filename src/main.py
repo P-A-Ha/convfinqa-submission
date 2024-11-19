@@ -29,13 +29,13 @@ def main():
     vector_store_manager.create_context_vector_store(additional_context_texts)
 
     logger.info(f"Initiialising Instruct Model")
-    llm_model = InstructClass(config)
+    instruct_class = InstructClass(config)
 
     logger.info(f"Initiialising RAG")
-    rag_system = RAGComponents(llm_model, vector_store_manager)
+    rag_system = RAGComponents(instruct_class, vector_store_manager)
 
     logger.info(f"Launching Gradio Interface")
-    rag_interface = GradioInterface(rag_system, config)
+    rag_interface = GradioInterface(instruct_class, rag_system, config)
     rag_interface.launch()
 
 

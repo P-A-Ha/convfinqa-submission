@@ -42,6 +42,7 @@ class InstructClass:
 
             Determine if the retrieved question is relevant to the query.
             Respond with "Relevant" if the retrieved question is relevant, or respond with "False" if the retrieved question is irrelevant.
+            Be strict.
             
             <<<
             Response:
@@ -58,7 +59,7 @@ class InstructClass:
             
             {context}
             
-            # Provide a comprehensive and informative answer to the user's query: "{query}"
+            # Provide a short and concise answer to the user's query: "{query}"
 
             <<<
             Answer:
