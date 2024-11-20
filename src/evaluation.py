@@ -63,14 +63,22 @@ class RAGEvaluation:
             similarity_score_retrieval = self.compute_similarity(
                 self.query, self.retrieved_question
             )
-            evaluation["Retrieved_Question_Similarity_to_User_Query"] = similarity_score_retrieval
+            evaluation["Retrieved_Question_Similarity_to_User_Query"] = (
+                similarity_score_retrieval
+            )
 
             rouge_scores = self.compute_rouge(
                 self.corresponding_answer, self.generative_response
             )
-            evaluation["Rouge1_RetrievedAnswer_vs_Generation"] = rouge_scores["rouge1"].fmeasure
-            evaluation["Rouge2_RetrievedAnswer_vs_Generation"] = rouge_scores["rouge2"].fmeasure
-            evaluation["RougeL_RetrievedAnswer_vs_Generation"] = rouge_scores["rougeL"].fmeasure
+            evaluation["Rouge1_RetrievedAnswer_vs_Generation"] = rouge_scores[
+                "rouge1"
+            ].fmeasure
+            evaluation["Rouge2_RetrievedAnswer_vs_Generation"] = rouge_scores[
+                "rouge2"
+            ].fmeasure
+            evaluation["RougeL_RetrievedAnswer_vs_Generation"] = rouge_scores[
+                "rougeL"
+            ].fmeasure
 
             bleu_score = self.compute_bleu(
                 self.corresponding_answer, self.generative_response
@@ -82,7 +90,9 @@ class RAGEvaluation:
             similarity_score_retrieval = self.compute_similarity(
                 self.query, self.additional_context_text
             )
-            evaluation["Retrieved_Context_Similarity_to_User_Query"] = similarity_score_retrieval
+            evaluation["Retrieved_Context_Similarity_to_User_Query"] = (
+                similarity_score_retrieval
+            )
 
             # Response Relevance to Answer
             response_sim = self.compute_similarity(
@@ -93,9 +103,15 @@ class RAGEvaluation:
             rouge_scores = self.compute_rouge(
                 self.additional_context_text, self.generative_response
             )
-            evaluation["Rouge1score_RetrievedContext_vs_Generation"] = rouge_scores["rouge1"].fmeasure
-            evaluation["Rouge2score_RetrievedContext_vs_Generation"] = rouge_scores["rouge2"].fmeasure
-            evaluation["RougeLscore_RetrievedContext_vs_Generation"] = rouge_scores["rougeL"].fmeasure
+            evaluation["Rouge1score_RetrievedContext_vs_Generation"] = rouge_scores[
+                "rouge1"
+            ].fmeasure
+            evaluation["Rouge2score_RetrievedContext_vs_Generation"] = rouge_scores[
+                "rouge2"
+            ].fmeasure
+            evaluation["RougeLscore_RetrievedContext_vs_Generation"] = rouge_scores[
+                "rougeL"
+            ].fmeasure
 
             bleu_score = self.compute_bleu(
                 self.additional_context_text, self.generative_response
