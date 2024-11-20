@@ -1,6 +1,11 @@
 # convfinqa-submission
+### Note: Code will be documented further.
 
 ## Solution Architecture
+
+![flow](images/CodeBase-Flow.png)
+
+### For batch evaluation please refer to the testing folder, more documentation coming soon.
 
 ## Running the App:
 
